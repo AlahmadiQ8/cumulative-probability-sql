@@ -7,6 +7,8 @@ var config = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddUserSecrets<Program>().Build();
 
+const int RUN_COUNT = 10000;
+
 var connectionString = config.GetSection("Probability")["ConnectionString"];
 
 var query = @"
@@ -26,8 +28,6 @@ using var sqlConnection = new SqlConnection(connectionString);
 var command = new SqlCommand { Connection = sqlConnection, CommandText = query };
 
 var teirs = new Dictionary<int, Tier>();
-
-const int RUN_COUNT = 10000;
 
 try
 {
