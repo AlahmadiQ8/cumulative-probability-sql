@@ -55,34 +55,21 @@ var result = teirs.Values
     .OrderBy(t => t.Key);
 
 Console.WriteLine($"Executed query {RUN_COUNT} times");
-PrintHistogram(result.ToList(), ("tier", "count"));
+PrintResult(result.ToList(), ("tier", "count"));
 
-https://stackoverflow.com/a/56140036/5431968
-static void PrintHistogram(List<KeyValuePair<string,int>> list, (string, string) headers)
+static void PrintResult(List<KeyValuePair<string,int>> list, (string, string) headers)
 {
-
-    // get the max length of all the words so we can align
     var max = list.Max(x => x.Key.Length);
     var maxCount = list.Max(x => x.Value.ToString().Length);
     var header = $"{headers.Item1.PadLeft(max)}  {headers.Item2.PadRight(maxCount)}";
     for (var i = 0; i < header.Length; i++)
-    {
         Console.Write('-');
-    }
     Console.WriteLine();
-
     Console.WriteLine(header);
     foreach (var item in list)
     {
-        // right align using PadLeft and max length
         Console.Write(item.Key.PadLeft(max));
-
         Console.Write($"  {item.Value.ToString().PadRight(maxCount)}  ");
-        
-        // Write the bars
-        // for (var i = 0; i < item.Value; i++)
-        //     Console.Write("#");
-
         Console.WriteLine();
     }
 }
