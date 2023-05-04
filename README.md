@@ -35,9 +35,10 @@ Example:
 | B    | 0.3         | 0.5        |
 | C    | 0.5         | 1          |
 
-If random number `x = 0.45`, then most we should return item `B`.
+If random number `x = 0.45`, then most we should return item `B` because `x` is `0.2 < x <= 0.5`.
 
 ```
+                           x
 |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
            0.2               0.5                            1
 └──────────┘ └───────────────┘ └───────────────────────────┘
@@ -53,7 +54,6 @@ We'll initialize our database with the following table and values
 <summary>SQL Init</summary>
 
 ```sql
--- https://stackoverflow.com/a/2762376/5431968
 CREATE TABLE Tiers
 (
 
