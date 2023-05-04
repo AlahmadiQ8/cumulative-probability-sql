@@ -2,6 +2,10 @@
 
 A fun challenge to see if we can implement weighted random drawing using only SQL.
 
+Upon looking online, the closest thing I can find is this answer on Stackoverflow: https://stackoverflow.com/a/33588562/5431968, which uses cumulative sum and random value.
+
+I used the same concept but different query implementation that I found subjectively easier to wrap my head around.
+
 ## Requirement
 
 Choose one item from a list, but consider the likelihood of each item as shown in the example table below. Our random selection should take into account these chances.
@@ -15,14 +19,13 @@ Choose one item from a list, but consider the likelihood of each item as shown i
 
 NOTE: Sum of all probabilities must sum to 1.
 
-
 ## Challenge
 
-Is it possible to do this using only SQL and not code? How dependable is it? Let's find out what we can do. Keep in mint, I'm completely ignoring performance, just whether it's doable or not.
+SQL only, no code. Keep in mind, I'm completely ignoring performance, just whether it's doable or not.
 
 ## Approach
 
-The easiest approach is to take the cumulative propability for each item and select a random number `x` where `0 < x < 1`.
+The easiest approach is to take the cumulative propability for each item and select a random number evenly distributed `x` where `0 < x < 1`.
 
 Example:
 
@@ -72,7 +75,9 @@ VALUES ('Teir_1', 0.1),
 
 </details>
 
-## The ultimate Query
+## The Query
+
+Here is the query I came up with.
 
 ```sql
 with rand AS (SELECT id, random=RAND() FROM Tiers)
@@ -101,5 +106,5 @@ Teir_3(0.3)  7933    0.26443333333
 Teir_4(0.4)  10685   0.35616666666
 ```
 
-I believe we received fairly good results, showing that the search functions properly. Although the search could be made simpler or faster. But for a first try, it's quite decent.
+The results are fairly good, showing that the query functions properly. Although the search could be made simpler or faster. But for a first try, it's quite decent.
 
