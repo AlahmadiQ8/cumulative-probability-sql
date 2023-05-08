@@ -19,6 +19,61 @@ Choose one item from a list, but consider the likelihood of each item as shown i
 
 NOTE: Sum of all probabilities must sum to 1.
 
+## Via Code
+
+<details>
+
+<summary>For reference, here is how it's done via code</summary>
+
+```csharp
+var items = new List<Item>
+{
+    new() { Id = "Item_1", Probability = 0.1 },
+    new() { Id = "Item_2", Probability = 0.2 },
+    new() { Id = "Item_3", Probability = 0.3 },
+    new() { Id = "Item_4", Probability = 0.4 }
+};
+
+const int runs = 1_000_000;
+var counts = new Dictionary<string, int>();
+for (var i = 0; i < runs; i++)
+{
+    var item = WeightedFairChance(items);
+    counts.TryAdd(item.Id, 0);
+    counts[item.Id]++;
+}
+
+foreach (var (id, count) in counts)
+{
+    Console.WriteLine($"{id}  {count}");
+}
+
+Item WeightedFairChance(IList<Item> input)
+{
+    var cumulativeProbability = new List<Item>();
+    double sum = 0;
+    foreach (var item in input)
+    {
+        sum += item.Probability;
+        cumulativeProbability.Add(new Item {Id = item.Id, Probability = sum});
+    }
+
+    var random = new Random().NextDouble();
+    var weightedRandomItem = cumulativeProbability
+        .OrderBy(item => item.Probability - random)
+        .First(item => item.Probability - random >= 0);
+
+    return input.Single(i => i.Id == weightedRandomItem.Id);
+}
+
+class Item
+{
+    public string Id { get; set; }
+    public double Probability { get; set; }
+}
+```
+</details>
+
 ## Challenge
 
 SQL only, no code. Keep in mind, I'm completely ignoring performance, just whether it's doable or not.
